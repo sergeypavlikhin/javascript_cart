@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <script>
         (function () {
-            var docFragment = document.createDocumentFragment();
+            renderStand();
 
-            var container = createElementWithClass('container');
-            var listbox = createElementWithClass('list-box');   //available elements
-            var carbox = createElementWithClass('cart-box');    //cart
 
-            function createElementWithClass(styleClass) {
-                var element = document.createElement('div');
-                container.setAttribute('class', styleClass);
+            //---------------///
+            function renderStand() {
+                var docFragment = document.createDocumentFragment();
+
+                var container = createElement('container', 'container');
+                var listbox = createElement('list-box', 'list-box');    //available elements
+                var cartbox = createElement('cart-box','cart-box');      //cart
+
+                getProducts().forEach(function (item, i, arr) {
+                    var product = createElement('product');
+                    var productTitle = createElement('product-title');
+                    productTitle.innerHTML = item;
+                    product.append(productTitle);
+                    cartbox.append(product);
+                });
+
+                container.append(listbox);
+                container.append(cartbox);
+
+                docFragment.appendChild(container);
+
+                document.body.appendChild(docFragment);
+
             }
 
+            function createElement(styleClass, id) {
+                var element = document.createElement('div');
+                element.setAttribute('class', styleClass);
+                if(id){
+                    element.setAttribute('id', id);
+                }
+                return element;
+            }
+
+            function getProducts() {
+                return [
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+                        "iPhone 7s", "Audi A4", "BMW 335i",
+
+                ];
+            }
         })();
     </script>
 </body>

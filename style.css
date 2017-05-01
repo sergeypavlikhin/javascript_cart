@@ -13,14 +13,28 @@
     width: 50%;
     height: 100%;
     float: left;
-    overflow-y: scroll;
+    overflow-y: auto;
     background: #97ee72;
 }
 .cart-box{
     position: relative;
     height: 100%;
     float: left;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 50%;
     background: #ee4748;
+}
+.product{
+    width: 100%;
+    position: relative;
+    height: 50px;
+    background: #eee;
+    margin-bottom: 10px;
+}
+.product-title{
+    font-family: Calibri sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 50px;
+    margin-left: 25px;
 }
