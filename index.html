@@ -3,33 +3,113 @@
 <head>
     <meta charset="utf-8">
 <link rel="stylesheet" href="style.css">
+<script src="js/DragManager.js"></script>
 </head>
 <body>
     <script>
         (function () {
+            var context = {};
+
+            const ATTR_ID = "data-id";
+            const DEFAULT_WIDTH = "100%";
+
+            var listPool = new ProductPool();
+            var cartPool = new ProductPool();
+
+            DragManager.onDragCancel = function(dragObject) {
+                var dragElem = dragObject.elem;
+                dragElem.removeAttribute("style");
+                dragElem.style.width = DEFAULT_WIDTH;
+                dragObject.avatar.rollback();
+            };
+            DragManager.onDragEnd = function(dragObject) {
+                var dragElem = dragObject.elem;
+
+                dragElem.removeAttribute("style");
+                dragElem.style.width = DEFAULT_WIDTH;
+
+                var attrId = dragObject.elem.getAttribute(ATTR_ID);
+                context.cartbox.appendChild(dragObject.elem);
+
+                exchange(attrId, listPool, cartPool);
+                updatePriceList(cartPool.getTotal());
+            };
+            DragManager.onDragStart = function(dragObject, dropElem) {
+                var elem = dragObject.elem;
+                var computedWidth = document.getElementById("list-box").offsetWidth;
+                elem.style.width = (computedWidth - 40) + "px";
+
+            };
             renderStand();
 
 
+
             //---------------///
+
+
+            function exchange(id, source, destination) {
+                destination.takeFrom(id, source);
+            }
+
+            function updatePriceList(total) {
+                context.pricelist.innerHTML = total.toFixed(2);
+                /*
+                var current = +context.pricelist.innerHTML;
+                var sign = current >= total ? -1.0 : 1.0;
+                var step =  0.1 * sign;
+                console.log(step);
+                var interval = setInterval(function () {
+                    if(step > 0 ? (current < total) : (current > total)){
+                        context.pricelist.innerHTML = current.toFixed(2);
+                        current += step;
+                    }else{
+                        clearInterval(interval);
+                    }
+                }, 1);*/
+
+            }
+
             function renderStand() {
                 var docFragment = document.createDocumentFragment();
 
-                var container = createElement('container', 'container');
-                var listbox = createElement('list-box', 'list-box');    //available elements
-                var cartbox = createElement('cart-box','cart-box');      //cart
+                context.container = createElement('container', 'container');
+                context.listbox = createElement('list-box ', 'list-box');    //available elements
+                context.cartbox = createElement('cart-box droppable','cart-box');      //cart
+
+                context.pricelist = createElement('pricelist', 'pricelist');
+                context.pricelist.innerHTML = "0";
+
+                context.cartbox.appendChild(context.pricelist);
 
                 getProducts().forEach(function (item, i, arr) {
-                    var product = createElement('product');
+                    var prod = new Product(item);
+                    var product = createElement('product draggable');
                     var productTitle = createElement('product-title');
-                    productTitle.innerHTML = item;
+
+                    product.setAttribute(ATTR_ID, item.id);
+                    productTitle.innerHTML = item.title;
+
                     product.append(productTitle);
-                    cartbox.append(product);
+                    context.listbox.append(product);
+
+                    var removeLink = createElement("removeLink", "removeLink");
+                    removeLink.innerHTML = "Remove";
+                    removeLink.onclick = function () {
+                        context.cartbox.removeChild(product);
+                        context.listbox.appendChild(product);
+
+                        listPool.add(prod);
+                        cartPool.remove(prod);
+                        updatePriceList(cartPool.getTotal());
+                    };
+                    product.append(removeLink);
+                    listPool.add(prod);
                 });
 
-                container.append(listbox);
-                container.append(cartbox);
+                context.container.append(context.listbox);
+                context.container.append(context.cartbox);
 
-                docFragment.appendChild(container);
+                docFragment.appendChild(context.container);
 
                 document.body.appendChild(docFragment);
 
@@ -46,15 +126,57 @@
 
             function getProducts() {
                 return [
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-                        "iPhone 7s", "Audi A4", "BMW 335i",
-
+                    {id: 1, title: "Audi A4", cost: 9.98},
+                    {id: 2, title: "BMW 335i", cost: 9.98},
+                    {id: 3, title: "Lada Priora", cost: 9.98},
+                    {id: 4, title: "MacBook is bad", cost: 9.98},
+                    {id: 5, title: "Vodka", cost: 9.98},
                 ];
+            }
+            function Product(props) {
+                var id = props['id'];
+                var title = props['title'];
+                var cost = props['cost'];
+
+                this.getId = function () {
+                    return id;
+                };
+                this.getTitle = function () {
+                    return title;
+                };
+                this.getCost = function () {
+                    return cost;
+                };
+            }
+
+            function ProductPool() {
+                var pool = {};
+                var self = this;
+                var total = 0;
+
+                this.add = function (elem) {
+                    if( elem instanceof Product){
+                        pool[elem.getId()] = elem;
+                        total += elem.getCost();
+                    }
+                };
+                this.remove = function (elem) {
+                    if( elem instanceof Product){
+                        delete pool[elem.id];
+                        total -= elem.getCost();
+                    }
+                };
+                this.searchById = function (id) {
+                    return pool[id];
+                };
+                this.takeFrom = function (id, pool) {
+                    var elem = pool.searchById(id);
+                    self.add(elem);
+                    pool.remove(elem);
+                };
+                this.getTotal = function () {
+                    return total;
+                };
             }
         })();
     </script>

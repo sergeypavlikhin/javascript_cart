@@ -30,11 +30,48 @@
     height: 50px;
     background: #eee;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 .product-title{
     font-family: Calibri sans-serif;
     font-size: 18px;
     font-weight: bold;
     line-height: 50px;
+    float: left;
     margin-left: 25px;
+}
+.removeLink{
+    display: none;
+
+}
+.cart-box .removeLink{
+    display: block;
+    font-family: Calibri sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 50px;
+    margin-right: 25px;
+    float: right;
+}
+.pricelist{
+    position: absolute;
+    bottom: 0;
+    top: auto;
+    right: 0;
+    left: 0;
+    margin: auto;
+    height: 75px;
+    width: 150px;
+    line-height: 75px;
+    font-size: 24px;
+    font-family: Calibri sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    z-index: 99999;
+    background: white;
+
+    transition: .5s;
+    -webkit-transition: .5s;
+    -moz-transition: .5s;
+
 }
