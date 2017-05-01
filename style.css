@@ -1,0 +1,26 @@
+.container{
+    position: absolute;
+    width: 1160px;
+    height: 786px;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.list-box{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    float: left;
+    overflow-y: scroll;
+    background: #97ee72;
+}
+.cart-box{
+    position: relative;
+    height: 100%;
+    float: left;
+    overflow-y: scroll;
+    width: 50%;
+    background: #ee4748;
+}

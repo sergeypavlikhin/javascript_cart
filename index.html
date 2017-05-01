@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        (function () {
+            var docFragment = document.createDocumentFragment();
+
+            var container = createElementWithClass('container');
+            var listbox = createElementWithClass('list-box');   //available elements
+            var carbox = createElementWithClass('cart-box');    //cart
+
+            function createElementWithClass(styleClass) {
+                var element = document.createElement('div');
+                container.setAttribute('class', styleClass);
+            }
+
+        })();
+    </script>
+</body>
+</html>
