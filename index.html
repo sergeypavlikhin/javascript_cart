@@ -24,15 +24,7 @@
             };
             DragManager.onDragEnd = function(dragObject) {
                 var dragElem = dragObject.elem;
-
-                dragElem.removeAttribute("style");
-                dragElem.style.width = DEFAULT_WIDTH;
-
-                var attrId = dragObject.elem.getAttribute(ATTR_ID);
-                context.cartbox.appendChild(dragObject.elem);
-
-                exchange(attrId, listPool, cartPool);
-                updatePriceList(cartPool.getTotal());
+                addToCart(dragElem);
             };
             DragManager.onDragStart = function(dragObject, dropElem) {
                 var elem = dragObject.elem;
@@ -46,6 +38,16 @@
 
             //---------------///
 
+            function addToCart(elem) {
+                elem.removeAttribute("style");
+                elem.style.width = DEFAULT_WIDTH;
+
+                var attrId = elem.getAttribute(ATTR_ID);
+                context.cartbox.appendChild(elem);
+
+                exchange(attrId, listPool, cartPool);
+                updatePriceList(cartPool.getTotal());
+            }
 
             function exchange(id, source, destination) {
                 destination.takeFrom(id, source);
@@ -95,14 +97,16 @@
                     var removeLink = createElement("removeLink", "removeLink");
                     removeLink.innerHTML = "Remove";
                     removeLink.onclick = function () {
+
                         context.cartbox.removeChild(product);
                         context.listbox.appendChild(product);
 
-                        listPool.add(prod);
-                        cartPool.remove(prod);
+                        exchange(item.id, cartPool, listPool);
                         updatePriceList(cartPool.getTotal());
                     };
                     product.append(removeLink);
+
+
                     listPool.add(prod);
                 });
 
@@ -131,6 +135,12 @@
                     {id: 3, title: "Lada Priora", cost: 9.98},
                     {id: 4, title: "MacBook is bad", cost: 9.98},
                     {id: 5, title: "Vodka", cost: 9.98},
+                    {id: 6, title: "Audi A4", cost: 9.98},
+                    {id: 7, title: "BMW 335i", cost: 9.98},
+                    {id: 8, title: "Lada Priora", cost: 9.98},
+                    {id: 9, title: "MacBook is bad", cost: 9.98},
+                    {id: 10, title: "Vodka", cost: 9.98},
+                    {id: 11, title: "Audi A4", cost: 9.98}
                 ];
             }
             function Product(props) {

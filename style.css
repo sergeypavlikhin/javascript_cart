@@ -10,27 +10,37 @@
 }
 .list-box{
     position: relative;
-    width: 50%;
-    height: 100%;
+    width: calc(50% - 40px);
+    height: calc(100% - 40px);
     float: left;
     overflow-y: auto;
-    background: #97ee72;
+    background: #c6f2cc;
+    padding: 20px;
 }
 .cart-box{
     position: relative;
-    height: 100%;
+    width: calc(50% - 40px);
+    height: calc(100% - 40px);
     float: left;
     overflow-y: auto;
-    width: 50%;
-    background: #ee4748;
+    background: #f6edce;
+    padding: 20px;
+    transition: .3s;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+}
+.product:hover{
+    background: #d0d57c;
 }
 .product{
     width: 100%;
     position: relative;
     height: 50px;
-    background: #eee;
+    background: #fff;
     margin-bottom: 10px;
     cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 5px 4px 15px -8px #eaeaea;
 }
 .product-title{
     font-family: Calibri sans-serif;
@@ -55,23 +65,24 @@
 }
 .pricelist{
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     top: auto;
     right: 0;
     left: 0;
     margin: auto;
-    height: 75px;
+    height: 50px;
     width: 150px;
-    line-height: 75px;
+    line-height: 50px;
     font-size: 24px;
     font-family: Calibri sans-serif;
     font-weight: bolder;
     text-align: center;
     z-index: 99999;
-    background: white;
-
+    background: #db2d2d;
     transition: .5s;
     -webkit-transition: .5s;
     -moz-transition: .5s;
+    border-radius: 5px;
+    color: white;
 
 }
