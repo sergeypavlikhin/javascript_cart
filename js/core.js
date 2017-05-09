@@ -35,7 +35,6 @@
     renderStand();
 
 
-
     //---------------///
 
     function addToCart(elem) {
@@ -174,9 +173,12 @@
         this.remove = function (elem) {
             if( elem instanceof Product){
                 if(size > 0){
-                    delete pool[elem.id];
-                    total -= elem.getCost();
-                    size--;
+                    var element = pool[elem.id];
+                    if(element){
+                        delete element;
+                        total -= elem.getCost();
+                        size--;
+                    }
                 }
             }
         };
