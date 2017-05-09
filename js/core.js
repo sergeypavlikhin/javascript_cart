@@ -90,7 +90,7 @@
 
         context.cartbox.appendChild(context.pricelist);
 
-        getProducts().forEach(function (item, i, arr) {
+        getProducts().forEach(function (item) {
             var prod = new Product(item);
             var product = createElement('product draggable');
             var productTitle = createElement('product-title');
