@@ -34,7 +34,6 @@
     };
     renderStand();
 
-
     //---------------///
 
     function addToCart(elem) {
@@ -171,17 +170,21 @@
 
         this.add = function (elem) {
             if( elem instanceof Product){
-                pool[elem.getId()] = elem;
-                total += elem.getCost();
-                size++;
+                var element = pool[elem.getId()];
+                if(!element){
+                    pool[elem.getId()] = elem;
+                    total += elem.getCost();
+                    size++;
+                }
+
             }
         };
         this.remove = function (elem) {
             if( elem instanceof Product){
                 if(size > 0){
-                    var element = pool[elem.id];
+                    var element = pool[elem.getId()];
                     if(element){
-                        delete element;
+                        delete pool[elem.id];
                         total -= elem.getCost();
                         size--;
                     }
