@@ -50,6 +50,12 @@
         }
     }
 
+    /**
+     * Перетаскивает элемент из {@param source} в {@param destination} элемент с id {@param id}
+     * @param id
+     * @param source
+     * @param destination
+     */
     function exchange(id, source, destination) {
         destination.takeFrom(id, source);
     }
@@ -90,7 +96,7 @@
             var productTitle = createElement('product-title');
 
             product.setAttribute(ATTR_ID, item.id);
-            productTitle.innerHTML = item.title;
+            productTitle.innerHTML = item.title + " (" + prod.getCost().toFixed(2) + "$)";
 
             product.append(productTitle);
             context.listbox.append(product);
@@ -131,12 +137,12 @@
             {id: 1, title: "Audi A4", cost: 9.98},
             {id: 2, title: "BMW 335i", cost: 9.98},
             {id: 3, title: "Lada Priora", cost: 9.98},
-            {id: 4, title: "MacBook is bad", cost: 9.98},
+            {id: 4, title: "MacBook", cost: 9.98},
             {id: 5, title: "Vodka", cost: 9.98},
             {id: 6, title: "Audi A4", cost: 9.98},
             {id: 7, title: "BMW 335i", cost: 9.98},
             {id: 8, title: "Lada Priora", cost: 9.98},
-            {id: 9, title: "MacBook is bad", cost: 9.98},
+            {id: 9, title: "MacBook", cost: 9.98},
             {id: 10, title: "Vodka", cost: 9.98},
             {id: 11, title: "Audi A4", cost: 9.98}
         ];
@@ -166,7 +172,7 @@
         this.add = function (elem) {
             if( elem instanceof Product){
                 pool[elem.getId()] = elem;
-                total += elem.getCost()
+                total += elem.getCost();
                 size++;
             }
         };
