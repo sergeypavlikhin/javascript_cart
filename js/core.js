@@ -13,6 +13,9 @@
 
     var adapter = new Adapter();
 
+    adapter.rollback =  function (dragObject) {
+        dragObject.avatar.rollback();
+    };
     DragManager.onDragCancel = function(dragObject) {
         adapter.cancel(dragObject);
     };
@@ -26,11 +29,13 @@
     renderStand();
 
     function Adapter() {
+        var self = this;
+
         this.cancel = function (dragObject) {
             var dragElem = dragObject.elem;
             dragElem.removeAttribute("style");
             dragElem.style.width = DEFAULT_WIDTH;
-            dragObject.avatar.rollback();
+            self.rollback(dragObject);
         };
         this.start = function (dragObject) {
             var elem = dragObject.elem;
@@ -39,13 +44,14 @@
         };
         this.end =  function (dragObject) {
             if(cartPool.getSize() == POOL_SIZE) {
-                dragObject.avatar.rollback();
+                self.rollback(dragObject);
                 alert("You could buy more than " + POOL_SIZE + " items")
                 return;
             }
             var dragElem = dragObject.elem;
             addToCart(dragElem);
         };
+        this.rollback = function (dragObject) {}
     }
 
     //---------------///
