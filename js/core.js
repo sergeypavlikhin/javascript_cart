@@ -11,28 +11,42 @@
     var listPool = new ProductPool();
     var cartPool = new ProductPool();
 
+    var adapter = new Adapter();
+
     DragManager.onDragCancel = function(dragObject) {
-        var dragElem = dragObject.elem;
-        dragElem.removeAttribute("style");
-        dragElem.style.width = DEFAULT_WIDTH;
-        dragObject.avatar.rollback();
+        adapter.cancel(dragObject);
     };
     DragManager.onDragEnd = function(dragObject) {
-        if(cartPool.getSize() == POOL_SIZE) {
-            dragObject.avatar.rollback();
-            alert("You could buy more than " + POOL_SIZE + " items")
-            return;
-        }
-        var dragElem = dragObject.elem;
-        addToCart(dragElem);
+        adapter.end(dragObject);
     };
     DragManager.onDragStart = function(dragObject, dropElem) {
-        var elem = dragObject.elem;
-        var computedWidth = document.getElementById("list-box").offsetWidth;
-        elem.style.width = (computedWidth - 40) + "px";
-
+        adapter.start(dragObject);
     };
+
     renderStand();
+
+    function Adapter() {
+        this.cancel = function (dragObject) {
+            var dragElem = dragObject.elem;
+            dragElem.removeAttribute("style");
+            dragElem.style.width = DEFAULT_WIDTH;
+            dragObject.avatar.rollback();
+        };
+        this.start = function (dragObject) {
+            var elem = dragObject.elem;
+            var computedWidth = document.getElementById("list-box").offsetWidth;
+            elem.style.width = (computedWidth - 40) + "px";
+        };
+        this.end =  function (dragObject) {
+            if(cartPool.getSize() == POOL_SIZE) {
+                dragObject.avatar.rollback();
+                alert("You could buy more than " + POOL_SIZE + " items")
+                return;
+            }
+            var dragElem = dragObject.elem;
+            addToCart(dragElem);
+        };
+    }
 
     //---------------///
 
@@ -176,9 +190,9 @@
                     total += elem.getCost();
                     size++;
                 }
-
             }
         };
+
         this.remove = function (elem) {
             if( elem instanceof Product){
                 if(size > 0){
@@ -191,6 +205,7 @@
                 }
             }
         };
+
         this.searchById = function (id) {
             return pool[id];
         };
